@@ -43,20 +43,13 @@ function EventManager() {
 /**
  * Adds a new event.
  */
-EventManager.prototype.newEvent = function(event, successCallback) {	
+EventManager.prototype.newEvent = function(event, successCallback, errorCallback) {	
     if (!event) {
 		event = {};
 	}
 	this.resultCallback = successCallback;
-	/*if (successCallback) {
-		event.successCallback = GetFunctionName(successCallback);
-	}*/
-	console.log("run cordova exec");
-	cordova.exec(function() {
-		alert("successCallback");
-	},function() {
-		alert("errorCallback");
-	},"EventManager", "newEvent", [event]);
+	console.log("cordova exec");
+	cordova.exec(successCallback,errorCallback,"EventManager", "newEvent", [event]);
 };
 
 

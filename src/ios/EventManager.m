@@ -1,7 +1,7 @@
 
 //
 //  EventManager.m
-//  
+//  iAmMobile
 //
 //  Created by Markus Voss on 9/2/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
@@ -17,7 +17,6 @@ NSString *callbackId = nil;
 
 -(CDVPlugin*) initWithWebView:(UIWebView*)theWebView
 {
-	NSLog(@"test");
     self = (EventManager*)[super initWithWebView:(UIWebView*)theWebView];
     if (self) {
         myEventStore = [[EKEventStore alloc] init];
@@ -93,8 +92,9 @@ NSString *callbackId = nil;
 
 -(void) showNoAccessErrorMessage;
 {
-    [self.webView stringByEvaluatingJavaScriptFromString:@"window.plugins.eventManager.didFinishWithResult('4');"];
-    //[self performSelector:@selector(writeJavascript:) onThread:[NSThread mainThread] withObject:jsString2 waitUntilDone:NO];
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"4"];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
     
     
@@ -126,6 +126,7 @@ NSString *callbackId = nil;
 - (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action {
 	EKEvent *thisEvent = controller.event;
 	NSString *webviewResult = nil;
+    CDVPluginResult* pluginResult = nil;
 	
 	switch (action) {
         case EKEventEditViewActionSaved:
@@ -140,15 +141,9 @@ NSString *callbackId = nil;
 		default:
 			webviewResult = @"1";
     }
-	
-	/*NSString* jsString2 = nil;
-	jsString2 = [[NSString alloc] initWithFormat:@"window.plugins.eventManager.didFinishWithResult('%@','%@');", webviewResult, [thisEvent eventIdentifier]];
-	[self.webView stringByEvaluatingJavaScriptFromString:jsString2];
-	*/
-	NSLog(@"Reached Success");
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self writeJavascript:[pluginResult toSuccessCallbackString:callbackId]];
-	[self.viewController dismissModalViewControllerAnimated:YES];
+    [self.viewController dismissModalViewControllerAnimated:YES];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[thisEvent eventIdentifier]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 @end
