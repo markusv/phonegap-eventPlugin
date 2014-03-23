@@ -13,11 +13,11 @@
 #import <Cordova/CDVPlugin.h>
 
 
-@interface EventManager : PGPlugin <EKEventEditViewDelegate>{
+@interface EventManager : CDVPlugin <EKEventEditViewDelegate>{
 	EKEventStore *myEventStore;
 }
 
-- (void) newEvent:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
-- (void) addEvent:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
+- (void) addEvent:(CDVInvokedUrlCommand*)command;
+- (void) newEvent:(CDVInvokedUrlCommand*)command;
 
 @end

@@ -15,7 +15,7 @@
 NSString *callbackId = nil;
 
 
--(PGPlugin*) initWithWebView:(UIWebView*)theWebView
+-(CDVPlugin*) initWithWebView:(UIWebView*)theWebView
 {
 	NSLog(@"test");
     self = (EventManager*)[super initWithWebView:(UIWebView*)theWebView];
@@ -26,7 +26,7 @@ NSString *callbackId = nil;
 }
 
 // - (void) addEvent:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
-- (void) addEvent:(CDVInvokedUrlCommand*)command {
+- (void) addEvent:(CDVInvokedUrlCommand*)command
 {
 	NSDictionary* options = [command.arguments objectAtIndex:0];
 	callbackId = command.callbackId;
@@ -85,10 +85,10 @@ NSString *callbackId = nil;
 	controller.eventStore = myEventStore;
 	
 	// present EventsAddViewController as a modal view controller
-	[[super appViewController] presentModalViewController:controller animated:YES];
+//	[[super appViewController] presentModalViewController:controller animated:YES];
+    [self.viewController presentModalViewController:controller animated:YES];
 	
 	controller.editViewDelegate = self;
-	[controller release];
 }
 
 -(void) showNoAccessErrorMessage;
@@ -96,17 +96,17 @@ NSString *callbackId = nil;
     [self.webView stringByEvaluatingJavaScriptFromString:@"window.plugins.eventManager.didFinishWithResult('4');"];
     //[self performSelector:@selector(writeJavascript:) onThread:[NSThread mainThread] withObject:jsString2 waitUntilDone:NO];
 }
-
-- (void) newEvent:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
-{
+    
+    
+- (void) newEvent:(CDVInvokedUrlCommand*)command {
 	if(![myEventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)]) {
-    	[self addEvent: arguments withDict:options];
+    	[self addEvent: command];
     	return;
 	}
 	[myEventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
 		if (granted){
 			dispatch_sync (dispatch_get_main_queue (), ^{
-				[self addEvent: arguments withDict:options];
+				[self addEvent: command];
 			});
 		} else {
 			dispatch_sync (dispatch_get_main_queue (), ^{
@@ -117,16 +117,7 @@ NSString *callbackId = nil;
 }
 
 
-
-- (void)dealloc {
-	if (myEventStore) {
-		[myEventStore release];
-	}
-	[super dealloc];
-}
-
-
-/******* Delegate methods from EKEventEditViewDelegate protocol
+/******* Delegate methods from EKEventEditViewDelegate protocol  ****/
  
  
  /**
@@ -157,15 +148,7 @@ NSString *callbackId = nil;
 	NSLog(@"Reached Success");
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self writeJavascript:[pluginResult toSuccessCallbackString:callbackId]];
-	[[super appViewController] dismissModalViewControllerAnimated:YES];
+	[self.viewController dismissModalViewControllerAnimated:YES];
 }
-
-
-/**
- * Returns the calender to use as the default calendar for events. 
- *
-- (EKCalendar *)eventEditViewControllerDefaultCalendarForNewEvents:(EKEventEditViewController *)controller {
-	
-}*/
 
 @end
