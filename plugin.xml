@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+           id="EventManager"
+      version="1">
+
+    <name>EventManager</name>
+    <description>Event plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>evnet,calendar</keywords>
+
+    <!-- ios -->
+    <platform name="ios">
+        <js-module src="www/EventManager.js" name="EventManager">
+            <clobbers target="cordova.eventManager" />
+        </js-module>
+        <config-file target="config.xml" parent="/*">
+            <feature name="EventManager">
+                <param name="ios-package" value="EventManager" /> s
+            </feature>
+        </config-file>
+
+	   <header-file src="src/ios/EventManager.h" />
+	   <source-file src="src/ios/EventManager.m" />
+
+       <framework src="EventKit.framework" />
+       <framework src="EventKitUI.framework" />
+    </platform>
+
+</plugin>
