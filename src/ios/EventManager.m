@@ -1,7 +1,7 @@
 
 //
 //  EventManager.m
-//  
+//  iAmMobile
 //
 //  Created by Markus Voss on 9/2/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
@@ -127,6 +127,7 @@ NSString *callbackId = nil;
 	EKEvent *thisEvent = controller.event;
 	NSString *webviewResult = nil;
     CDVPluginResult* pluginResult = nil;
+    NSMutableArray *items = [NSMutableArray array];
 	
 	switch (action) {
         case EKEventEditViewActionSaved:
@@ -142,7 +143,11 @@ NSString *callbackId = nil;
 			webviewResult = @"1";
     }
     [self.viewController dismissModalViewControllerAnimated:YES];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[thisEvent eventIdentifier]];
+    [items addObject:webviewResult];
+    if ([webviewResult isEqualToString: @"1"]) {
+        [items addObject:[thisEvent eventIdentifier]];
+    }
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:items];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 

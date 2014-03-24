@@ -1,35 +1,7 @@
-/**
+cordova.define("EventManager.EventManager", function(require, exports, module) { /**
  * EventManager.js
  * Created by Markus Voss on 9/1/10.
  */
-
-
-/**
- * This is returned to possible javascript callback functions if the event 
- * was added successfulll.
- */
-var EVENT_ADDED_SUCCESSFULL = 1;
-
-
-/**
- * This is returned to possible javascript callback functions if the event
- * was added canceled.
- */
-var EVENT_ADDED_CANCEL = 2;
-
-
-/**
- * This status is returned to possible javascript callback functions if a
- * event was deleted. 
- */
-var EVENT_DELETED = 3;
-
-
-/**
- * No access to calendar. 
- */
-var EVENT_NO_ACCESS = 4;
-
 
 /**
  * The javascript object representation the EventManager. Call to funcions
@@ -38,6 +10,34 @@ var EVENT_NO_ACCESS = 4;
 function EventManager() {
 	this.resultCallback = null; // Function
 };
+
+
+
+/**
+ * This is returned to possible javascript callback functions if the event 
+ * was added successfulll.
+ */
+EventManager.prototype.EVENT_ADDED_SUCCESSFULL = 1;
+
+
+/**
+ * This is returned to possible javascript callback functions if the event
+ * was added canceled.
+ */
+EventManager.prototype.EVENT_ADDED_CANCEL = 2;
+
+
+/**
+ * This status is returned to possible javascript callback functions if a
+ * event was deleted. 
+ */
+EventManager.prototype.EVENT_DELETED = 3;
+
+
+/**
+ * No access to calendar. 
+ */
+EventManager.prototype.EVENT_NO_ACCESS = 4;
 
 
 /**
@@ -72,4 +72,5 @@ cordova.addConstructor(function() {
 		window.plugins = {};
 	}
 	window.plugins.eventManager = new EventManager();
+});
 });
