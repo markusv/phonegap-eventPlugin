@@ -1,4 +1,4 @@
-cordova.define("EventManager.EventManager", function(require, exports, module) { /**
+/**
  * EventManager.js
  * Created by Markus Voss on 9/1/10.
  */
@@ -72,5 +72,4 @@ cordova.addConstructor(function() {
 		window.plugins = {};
 	}
 	window.plugins.eventManager = new EventManager();
-});
 });
