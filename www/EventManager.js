@@ -48,7 +48,6 @@ EventManager.prototype.newEvent = function(event, successCallback, errorCallback
 		event = {};
 	}
 	this.resultCallback = successCallback;
-	console.log("cordova exec");
 	cordova.exec(successCallback,errorCallback,"EventManager", "newEvent", [event]);
 };
 
